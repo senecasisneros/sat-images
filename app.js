@@ -42,13 +42,29 @@ app.get('/images', (req, res) => {
 /////// POST ////////////
 app.post('/images', (req, res) => {
   Image.create(req.body)
+  .then(() => {
+    res.send()
+  })
+  .catch(err => {
+    res.status(400).send(err);
+  });
+});
+
+//////////  DELETE  ////////////
+app.delete('/images/:id', (req, res) => {
+  Image.delete(req.params.id)
     .then(() => {
-      res.send()
+      res.send();
     })
     .catch(err => {
       res.status(400).send(err);
     });
-});
+})
+
+
+
+
+
 
 
 ///// SERVER LISTEN

@@ -33,7 +33,6 @@ exports.getAll = function() {
 }
 
 //////////  CREATE NEW POST ////////////
-
 exports.create = function(newImage) {
   return new Promise((resolve, reject) => {
     let timestamp = moment().format('YYYY/MM/DD HH:mm:ss');
@@ -47,6 +46,25 @@ exports.create = function(newImage) {
     db.query(sql, err => {
       if(err) {
         reject (err);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
+
+//////////  DELETE  ////////////
+exports.delete = function(id) {
+  return new Promise((resolve, reject) => {
+    let sql = squel.delete()
+                   .from('images')
+                   .where('id = ?', id)
+                   .toString();
+
+    db.query(sql, err => {
+      if(err) {
+        reject(err);
       } else {
         resolve();
       }

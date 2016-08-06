@@ -21,7 +21,9 @@ db.query(`create table if not exists images (
 //////////  GET ALL ////////////
 exports.getAll = function() {
   return new Promise((resolve, reject) => {
-    let sql = squel.select().from('images').toString();
+    let sql = squel.select()
+    .from('images')
+    .toString();
     db.query(sql, (err, images) => {
       if(err) {
         reject(err);
@@ -31,6 +33,27 @@ exports.getAll = function() {
     });
   });
 }
+
+//////////  GET ONE ////////////
+exports.getOne = function(id) {
+  return new Promise((resolve, reject) => {
+    let sql = squel.select()
+    .from('images')
+    .where('id = ?', id)
+    .toString();
+
+    db.query(sql, (err, images) => {
+      let image = images[0];
+      if(err) {
+        reject(err);
+      } else if(!image) {
+        reject({error: 'Image not found.'})
+      } else {
+        resolve(image);
+      }
+    });
+  });
+};
 
 //////////  CREATE NEW POST ////////////
 exports.create = function(newImage) {

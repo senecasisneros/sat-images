@@ -53,17 +53,41 @@ exports.create = function(newImage) {
   });
 };
 
+//////////  UPDATE  ////////////
+exports.update = function(id, updateObj) {
+  return new Promise((resolve, reject) => {
+    delete updateObj.id;
+    delete updateObj.creatAt;
+
+    let sql = squel.update()
+    .table('images')
+    .setFields(updateObj)
+    .where('id = ?', id)
+    .toString();
+
+    db.query(sql, (err) => {
+      if(err) {
+        reject (err);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
 
 //////////  DELETE  ////////////
 exports.delete = function(id) {
   return new Promise((resolve, reject) => {
     let sql = squel.delete()
-                   .from('images')
-                   .where('id = ?', id)
-                   .toString();
+    .from('images')
+    .where('id = ?', id)
+    .toString();
 
     db.query(sql, err => {
-      if(err) {
+      if(resultaffectedRows === 0) {
+        reject({error: "Image not found."})
+      } else if (err) {
         reject(err);
       } else {
         resolve();

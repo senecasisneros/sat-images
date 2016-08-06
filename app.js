@@ -21,51 +21,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-
-////ROUTES //////
-
-let Image = require('./models/image');
-
-
-
-/////// GET ////////////
-app.get('/images', (req, res) => {
-  Image.getAll()
-  .then(images => {
-    res.send(images);
-  })
-  .catch(err => {
-    res.status(400).send(err);
-  });
-})
-
-/////// POST ////////////
-app.post('/images', (req, res) => {
-  Image.create(req.body)
-  .then(() => {
-    res.send()
-  })
-  .catch(err => {
-    res.status(400).send(err);
-  });
-});
-
-//////////  DELETE  ////////////
-app.delete('/images/:id', (req, res) => {
-  Image.delete(req.params.id)
-    .then(() => {
-      res.send();
-    })
-    .catch(err => {
-      res.status(400).send(err);
-    });
-})
-
-
-
-
-
-
+///ROUTES
+app.use('/images', require('./routes/images'));
 
 ///// SERVER LISTEN
 app.listen(PORT, err => {
